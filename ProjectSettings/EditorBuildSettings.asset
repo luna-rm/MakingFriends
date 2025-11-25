@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/menu.unity
+    guid: 2cc6a16e39a04a548a750bc8a7f2550c
+  - enabled: 1
+    path: Assets/Scenes/FlowerScenes/start.unity
+    guid: ddc72b6c4136c9a4ea211d2bed25d93a
+  - enabled: 1
+    path: Assets/Scenes/FlowerScenes/waters.unity
+    guid: fd8723a59a08ebb40b1ad3269cb9087d
+  - enabled: 1
+    path: Assets/Scenes/FlowerScenes/startEnd.unity
+    guid: d92053e87ec5b2945838a869a0f90c94
+  - enabled: 1
+    path: Assets/Scenes/FlowerScenes/startDied.unity
+    guid: 3e6eff05130df9d4cbfe813eac02bab3
+  - enabled: 1
+    path: Assets/Scenes/DepthScenes/toDepth.unity
+    guid: 9dc2e8ca583f7b542ba685f7c7717034
+  - enabled: 1
+    path: Assets/Scenes/DepthScenes/depth.unity
+    guid: 466207f19534c1d458946243615d68fc
+  - enabled: 1
+    path: Assets/Scenes/DepthScenes/depthEnd.unity
+    guid: 8d6bb3dd21857b548b0b286a2a2aa260
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_UseUCBPForAssetBundles: 0
