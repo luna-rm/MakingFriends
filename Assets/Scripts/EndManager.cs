@@ -31,7 +31,8 @@ public class EndManager : MonoBehaviour {
             StartCoroutine(disappear(obg, points));
         } else if(where == 2){
             where++;
-            StartCoroutine(disappear(points, photo));
+            StartCoroutine(disappear(points, null));
+            //StartCoroutine(disappear(points, photo));
         } else if(where == 3){
             where++;
             StartCoroutine(disappear(photo, null));
