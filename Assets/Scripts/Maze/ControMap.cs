@@ -16,7 +16,7 @@ public class ControMap : MonoBehaviour {
         if(map.alpha == 0f) {
             Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
             transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
-            currentZoom = 40f;
+            currentZoom = 20f;
             mapCam.orthographicSize = currentZoom;
         } else {
             float scroll = Input.GetAxis("Mouse ScrollWheel");
