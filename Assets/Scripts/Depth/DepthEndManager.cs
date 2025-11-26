@@ -41,6 +41,7 @@ public class DepthEndManager : MonoBehaviour {
 
     private void Start() {
         StartCoroutine(protectionCheck());
+        AnxietyScript.instance.anxiety = PlayerPrefs.GetFloat("anxiety");
     }
 
     private IEnumerator protectionCheck() {

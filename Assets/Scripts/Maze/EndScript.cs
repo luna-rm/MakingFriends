@@ -9,6 +9,7 @@ public class EndScript : MonoBehaviour {
     private void OnTriggerEnter(UnityEngine.Collider other) {
         if(other != null) {
             if(other.gameObject.name == "Player") {
+                PlayerPrefs.SetFloat("anxiety", AnxietyScript.instance.anxiety);
                 SceneManager.LoadScene(goTo);
             }
         }
