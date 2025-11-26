@@ -6,7 +6,9 @@ public class ImageScript : MonoBehaviour {
     private Camera m_Camera;
 
     private bool inAnimation = false;
-    public float animTime = 0.5f; 
+    public float animTime = 0.5f;
+
+    [SerializeField] private bool dontChangeX = false;
 
     private void Start() {
         m_Camera = Camera.main;
@@ -15,6 +17,10 @@ public class ImageScript : MonoBehaviour {
     void Update() { 
         if (!inAnimation) {
             Vector3 cameraPos = m_Camera.transform.position;
+
+            if(dontChangeX) {
+                cameraPos.y = transform.position.y;
+            }
 
             transform.LookAt(cameraPos);
             transform.Rotate(0f, 180f, 0f);
