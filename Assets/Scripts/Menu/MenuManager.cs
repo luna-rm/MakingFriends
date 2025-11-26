@@ -18,6 +18,8 @@ public class MenuManager : MonoBehaviour {
 
     private void Start() {
         GameEventManager.InputContext = InputContextEnum.LOCKED;
+        PlayerPrefs.SetInt("Flowers", 0);
+        PlayerPrefs.SetInt("Eyes", 0);
     }
 
     void Update() {

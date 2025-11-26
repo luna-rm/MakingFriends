@@ -33,6 +33,7 @@ public class DepthManager : MonoBehaviour {
         if(instance == null) {
             instance = this;
         } 
+        PlayerPrefs.SetInt("Eye", 0);
     }
 
     private void Start() {
@@ -45,6 +46,10 @@ public class DepthManager : MonoBehaviour {
         if (eyeOpen) {
             if (!inProtection) {
                 AnxietyScript.instance.addValue(true, 0.001f);
+                int e = PlayerPrefs.GetInt("Eye");
+                e++;
+                PlayerPrefs.SetInt("Eye", e);
+                Debug.Log("Eye? " + e);
             }
         }
 

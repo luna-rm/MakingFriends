@@ -18,6 +18,10 @@ public class flowerTrigger : MonoBehaviour {
 
     private IEnumerator destroyFlower() {
         yield return new WaitForSeconds(0.2f);
+        int f = PlayerPrefs.GetInt("Flower");
+        f++;
+        PlayerPrefs.SetInt("Flower", f);
+        Debug.Log("flower? " + f);
         Destroy(flower);
    }
 }

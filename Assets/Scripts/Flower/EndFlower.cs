@@ -20,6 +20,8 @@ public class EndFlower : MonoBehaviour {
 
     private void Awake() {
         flower0Interaction = flower0.GetComponent<InteractionScript>();
+        int f = PlayerPrefs.GetInt("Flower");
+        Debug.Log("flower? " + f);
     }
 
     private void Update() {

@@ -36,6 +36,9 @@ public class FlowerGirlScript : MonoBehaviour {
 
         flower0Image = flower0.GetComponent<ImageScript>();
         flower1Image = flower1.GetComponent<ImageScript>();
+
+        PlayerPrefs.SetInt("Flower", 0);
+        PlayerPrefs.SetInt("Eye", 0);
     }
 
     private void Update() {
