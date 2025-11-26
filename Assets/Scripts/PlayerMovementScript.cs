@@ -31,6 +31,8 @@ public class Player : MonoBehaviour {
 
     [SerializeField] private bool awakeAnim = true;
 
+    public bool canMove = true;
+
     private void Awake() {
         pixelate.SetInt("_Pixelation", 3);
 
@@ -107,8 +109,10 @@ public class Player : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        MovePlayer();
-        ApplyJumpPhysics();
+        if (canMove) {
+            MovePlayer();
+            ApplyJumpPhysics();
+        }
     }
 
     void MovePlayer() {

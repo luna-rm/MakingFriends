@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class DepthEndTalkManager : MonoBehaviour {
 
@@ -39,11 +40,20 @@ public class DepthEndTalkManager : MonoBehaviour {
     public Volume postProcessing;
     private UnityEngine.Rendering.Universal.DepthOfField depthOfField;
 
-    private bool needLock = true;
+    public bool needLock = true;
 
     [SerializeField] float waitInit = 10f;
 
     [SerializeField] public Light RedLight;
+
+    public Coroutine animCoroutine = null;
+
+    [SerializeField] TextScriptPirate text;
+
+    [SerializeField] DrawScript fish0;
+    [SerializeField] DrawScript fish1;
+
+    private bool endAnim = false;
 
     private void Awake() {
         if(instance == null) {
@@ -69,9 +79,11 @@ public class DepthEndTalkManager : MonoBehaviour {
         //cEmission.enabled  = false;
 
         if (!animStarted) {
-            StartCoroutine(anim());
+            animCoroutine = StartCoroutine(anim());
             animStarted = true;
         }
+
+        player.GetComponent<Player>().canMove = false;
     }
 
     private IEnumerator anim() {
@@ -83,10 +95,8 @@ public class DepthEndTalkManager : MonoBehaviour {
         float startX = Pirate.transform.position.x;
 
         while (elapsedTime < 7f) {
-            float newZ = Mathf.Lerp(startZ, -16f, (elapsedTime / 7f));
-            float newX = Mathf.Lerp(startX, -4f, (elapsedTime / 7f));
-            Pirate.transform.position = new Vector3(newX, Pirate.transform.position.y, newZ);
-            Debug.Log(newZ + " " + Pirate.transform.position.z);
+            float newX = Mathf.Lerp(startX, -3.5f, (elapsedTime / 7f));
+            Pirate.transform.position = new Vector3(newX, Pirate.transform.position.y, Pirate.transform.position.z);
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -118,5 +128,78 @@ public class DepthEndTalkManager : MonoBehaviour {
         if(GameEventManager.InputContext != InputContextEnum.LOCKED && needLock) {
             GameEventManager.InputContext = InputContextEnum.LOCKED;
         }
+
+        if (text.GetText() == "Deixa eu ver!!"){
+            fish0.gameObject.SetActive(true);
+            fish0.go = true;
+
+            fish1.gameObject.SetActive(true);
+            fish1.go = true;
+        }
+
+        if (Pirate.GetComponent<TriggerInteraction>().dialogueFinished && !endAnim){
+            endAnim = true;
+            StartCoroutine(endScene());
+        }
+    }
+
+    public IEnumerator lookToMe() {
+        float elapsedTime = 0f;
+        
+        Quaternion startRotation = player.transform.rotation;
+
+        Vector3 directionToTarget = Pirate.transform.position - player.transform.position;
+        directionToTarget.y = 0;
+        Quaternion endRotation = Quaternion.LookRotation(directionToTarget);
+
+        while (elapsedTime < 2f) {
+            float linearT = elapsedTime / 2f;
+
+            float t = Mathf.Sin(linearT * Mathf.PI * 0.5f);
+
+            player.transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+
+            RedLight.intensity = Mathf.Lerp(100f, 0, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        player.transform.rotation = endRotation;
+
+        StartCoroutine(ReduceAnxiety());
+    }
+
+    private IEnumerator ReduceAnxiety(){
+        startEyeOpen = false;
+        float elapsedTime = 0f;
+
+        cry.gameObject.SetActive(false);
+        cry1.gameObject.SetActive(false);
+
+        while (elapsedTime < 7f){
+            float newA = Mathf.Lerp(0.99f, 0f, (elapsedTime / 7f));
+            AnxietyScript.instance.anxiety = newA;
+
+            float newV = Mathf.Lerp(0.2f, 0f, (elapsedTime / 7f));
+            CrySounds.volume = newV;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    public IEnumerator endScene() {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 5f){
+            float newA = Mathf.Lerp(0f, 1f, (elapsedTime / 5f));
+            black.alpha = newA;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        SceneManager.LoadScene("end");
     }
 }

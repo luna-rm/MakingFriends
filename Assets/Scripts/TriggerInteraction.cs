@@ -74,12 +74,15 @@ public class TriggerInteraction : MonoBehaviour {
 
     private void submitPressed() {
         if(dialogue != null) {
+            DepthEndTalkManager.instance.needLock = false;
+
             isCurrentConversation = true;
             
             dialogueFinished = false; 
-            
-            GameEventManager.instance.dialogueEvents.EnterDialogue(dialogue);
             GameEventManager.InputContext = InputContextEnum.DIALOGUE;
+
+            GameEventManager.instance.dialogueEvents.EnterDialogue(dialogue);
+            Debug.Log("a");
         }
     }
 

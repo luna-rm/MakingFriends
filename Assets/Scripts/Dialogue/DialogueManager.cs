@@ -39,6 +39,7 @@ public class DialogueManager : MonoBehaviour {
     private void Update() {
         if(dialoguePlaying) {
             if (Input.GetKeyDown(KeyCode.E) && GameEventManager.InputContext == InputContextEnum.DIALOGUE){
+                Debug.Log("B");
                 if (GameEventManager.instance.dialogueEvents.isTyping) {
                     GameEventManager.instance.dialogueEvents.SkipTyping();
                 } else {
@@ -48,6 +49,7 @@ public class DialogueManager : MonoBehaviour {
         }
         else if(alreadyStarted){
             if (story.canContinue) {
+                Debug.Log("C");
                 ExitDialogue();
             }
         }
