@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class DepthEndManager : MonoBehaviour {
 
@@ -22,19 +24,10 @@ public class DepthEndManager : MonoBehaviour {
     [SerializeField] private int numberOfObjects = 5;
     [SerializeField] private Vector3 spawnAreaSize = new Vector3(60, 5, 60);
 
-    [SerializeField] public float timeAnxiety = 0.2f;
-
-    [SerializeField] private GameObject Pirate;
-    [SerializeField] private List<ParticleSystem> EyeParticle;
-    [SerializeField] private GameObject Person;
-
-
-    [SerializeField] private ParticleSystem cry;
-    [SerializeField] private ParticleSystem cry1;
+    [SerializeField] public float timeAnxiety = 0.1f;
 
     [SerializeField] private CanvasGroup black;
 
-    [SerializeField] private AudioSource CrySounds;
 
     private bool animStarted = false;
     public Volume postProcessing;
@@ -48,22 +41,13 @@ public class DepthEndManager : MonoBehaviour {
 
     private void Start() {
         StartCoroutine(protectionCheck());
-
-        postProcessing.profile.TryGet(out UnityEngine.Rendering.Universal.DepthOfField df);
-        depthOfField = df;
-        depthOfField.active = false;
-
-        var cEmission = cry.emission;
-        cEmission.enabled  = false;
-        cEmission = cry1.emission;
-        cEmission.enabled  = false;
     }
 
     private IEnumerator protectionCheck() {
         if (eyeOpen) {
             if (!inProtection) {
                 if(AnxietyScript.instance.anxiety < 0.99f) {
-                    AnxietyScript.instance.addValueToNotKill(true, 0.01f);
+                    AnxietyScript.instance.addValueToNotKill(true, 0.005f);
                     SpawnEyes();
                 }
             }
@@ -86,62 +70,10 @@ public class DepthEndManager : MonoBehaviour {
     private IEnumerator anim() {
         GameEventManager.InputContext = InputContextEnum.LOCKED;
 
-        float elapsedTime = 0f;
-        Quaternion startRotation = player.transform.rotation;
-        Quaternion targetRotation = Quaternion.LookRotation(Pirate.transform.position);
-
-        //while (elapsedTime < 1f) {
-        //    float t = elapsedTime / 1f;
-        //    Camera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
-
-        //    elapsedTime += Time.deltaTime;
-        //    yield return null;
-        //}
-
         black.alpha = 1f;
-        player.transform.rotation = targetRotation;
-        player.transform.position = new Vector3(0, 0, -14f);
         yield return new WaitForSeconds(0.25f);
-        black.alpha = 0f;
 
-        depthOfField.active = true;
-        
-        elapsedTime = 0f;
-
-        startRotation = Camera.transform.rotation;
-        targetRotation = startRotation * Quaternion.Euler(30, 0f, 0);
-
-        while (elapsedTime < 1.5f) {
-            float t = elapsedTime / 1.5f;
-            Camera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
-            float newY = Mathf.Lerp(0.75f, 0.5f, (elapsedTime / 1.5f));
-            Camera.transform.position = new Vector3(Camera.transform.position.x, newY, Camera.transform.position.z);
-            float newStart = Mathf.Lerp(100f, 0f, (elapsedTime / 1.5f));
-            depthOfField.gaussianStart.value = newStart;
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        CrySounds.Play();
-
-        var cEmission = cry.emission;
-        cEmission.enabled  = true;
-        cEmission = cry1.emission;
-        cEmission.enabled  = true;
-
-        elapsedTime = 0f;
-
-        float startZ = Pirate.transform.position.z;
-
-        while (elapsedTime < 3f) {
-            float newZ = Mathf.Lerp(startZ, -15.2f, (elapsedTime / 3f));
-            Pirate.transform.position = new Vector3(Pirate.transform.position.x, Pirate.transform.position.y, newZ);
-            Debug.Log(newZ + " " + Pirate.transform.position.z);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        SceneManager.LoadScene("depthEndTalk");
     }
 
     public void SpawnEyes() {

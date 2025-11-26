@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class TextScript : MonoBehaviour {
+public class TextScriptPirate : MonoBehaviour {
 
     [SerializeField] private TextMeshPro dialogueText;
     [SerializeField] private float typingSpeed = 0.02f;
@@ -61,7 +60,6 @@ public class TextScript : MonoBehaviour {
     public void DisplayDialogue(string dialogueLine) {
         currentSentence = dialogueLine;
         
-        // 1. Stop any existing typing
         if (typingCoroutine != null) {
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
@@ -69,7 +67,6 @@ public class TextScript : MonoBehaviour {
         
         ResetPanel(); 
         
-        // 2. Start the new typing coroutine
         typingCoroutine = StartCoroutine(TypeSentence(dialogueLine));
     }
 
@@ -109,6 +106,8 @@ public class TextScript : MonoBehaviour {
             // 2. Tell the manager we are done
             GameEventManager.instance.dialogueEvents.isTyping = false;
 
+            // 3. Rebuild the ENTIRE string from scratch instantly.
+            // This guarantees the formatting (\n) is exactly the same as if it typed out.
             string finalBuiltText = "";
             int tempEnterCount = 0;
 
@@ -137,12 +136,7 @@ public class TextScript : MonoBehaviour {
     }
 
     private void PlayVoice() {
-        float auxVolume = volume;
-        if(this.gameObject.name == "TextRigidSelfHigh(Clone)") {
-            auxVolume += volume*AnxietyScript.instance.anxiety + volume*AnxietyScript.instance.anxiety + volume*AnxietyScript.instance.anxiety;
-            Debug.Log(auxVolume);
-        }
-        SoundFXManager.instance.PlaySoundFXClip(voice[voiceCount], transform, auxVolume);
+        SoundFXManager.instance.PlaySoundFXClip(voice[voiceCount], transform, volume);
         voiceCount++;
         if(voiceCount >= voice.Count) { 
             voiceCount = 0;

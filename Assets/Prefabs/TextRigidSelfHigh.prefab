@@ -203,7 +203,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3eb53d336eb529449a6fec39e49204ec, type: 3}
   - {fileID: 8300000, guid: 71bb7b0da0bafe84abb2b4ef39c59f4f, type: 3}
   - {fileID: 8300000, guid: 5e3dea0fe4922154ab27745d279c9ede, type: 3}
-  volume: 0.5
+  volume: 0.2
   isDialogue: 0
 --- !u!114 &1170232091696727855
 MonoBehaviour:
@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animTime: 0.5
+  dontChangeX: 0
 --- !u!54 &-1356812341537114590
 Rigidbody:
   m_ObjectHideFlags: 0

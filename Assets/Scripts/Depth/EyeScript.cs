@@ -22,8 +22,14 @@ public class EyeScript : MonoBehaviour
             } else {
                 at = StartCoroutine(disappear());
             }
-        } else {
-             if (DepthEndManager.instance.startEyeOpen) {
+        } else if(DepthEndManager.instance != null){
+            if (DepthEndManager.instance.startEyeOpen) {
+                at = StartCoroutine(appear());
+            } else {
+                at = StartCoroutine(disappear());
+            }  
+        } else if(DepthEndTalkManager.instance != null){
+            if (DepthEndTalkManager.instance.startEyeOpen) {
                 at = StartCoroutine(appear());
             } else {
                 at = StartCoroutine(disappear());
